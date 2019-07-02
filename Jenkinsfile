@@ -6,12 +6,12 @@ pipeline {
         }
     }
     stages {
-        stage('Build') {
+        stage('package') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        node {
+        stage('build') {
             checkout scm
 
             def customImage = docker.build("my-image:${env.BUILD_ID}")
