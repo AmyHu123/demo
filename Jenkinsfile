@@ -3,6 +3,7 @@ pipeline {
 
         environment {
                 HARBOR_CREDS = credentials('jenkins-harbor')
+                K8S_CONFIG = credentials('jenkins-k8s-config')
             }
 
         parameters {
