@@ -6,7 +6,7 @@ pipeline {
             }
 
         parameters {
-                string(name: 'HARBOR_HOST', defaultValue: 'http://harbor.olavoice.com', description: 'harbor仓库地址')
+                string(name: 'HARBOR_HOST', defaultValue: 'harbor.olavoice.com', description: 'harbor仓库地址')
                 string(name: 'DOCKER_IMAGE', defaultValue: 'demo-master', description: 'docker镜像名')
             }
 
@@ -31,9 +31,9 @@ pipeline {
                steps {
                    unstash 'demo'
                    sh "docker login -u ${HARBOR_CREDS_USR} -p ${HARBOR_CREDS_PSW} ${params.HARBOR_HOST}"
-                   sh "docker build --build-arg JAR_FILE=`ls target/*.jar |cut -d '/' -f2` -t ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:1.0 ."
-                   sh "docker push ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:1.0"
-                   sh "docker rmi ${params.HARBOR_HOST}/${params.DOCKER_IMAGE}:1.0"
+                   sh "docker build --build-arg JAR_FILE=`ls target/*.jar |cut -d '/' -f2` -t ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0 ."
+                   sh "docker push ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0"
+                   sh "docker rmi ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0"
                }
 
            }
