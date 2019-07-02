@@ -42,11 +42,7 @@ pipeline {
            }
 
            stage('Deploy') {
-                       agent {
-                           docker {
-                               image 'bitnami/kubectl:1.14.3'
-                           }
-                       }
+                       agent any
                        steps {
                            sh "mkdir -p ~/.kube"
                            sh "echo ${K8S_CONFIG} > ~/.kube/config"
