@@ -8,6 +8,8 @@ pipeline {
         parameters {
                 string(name: 'HARBOR_HOST', defaultValue: 'harbor.olavoice.com', description: 'harbor仓库地址')
                 string(name: 'DOCKER_IMAGE', defaultValue: 'demo-master', description: 'docker镜像名')
+                string(name: 'APP_NAME', defaultValue: 'demo-master', description: 'k8s中标签名')
+                string(name: 'K8S_NAMESPACE', defaultValue: 'default', description: 'k8s的namespace名称')
             }
 
    stages {
@@ -37,5 +39,22 @@ pipeline {
                }
 
            }
+
+           stage('Deploy') {
+                       agent {
+                           docker {
+                               image '${params.HARBOR_HOST}/test/demo-master'
+                           }
+                       }
+                       steps {
+                           sh "mkdir -p ~/.kube"
+                           sh "echo ${K8S_CONFIG} | base64 -d > ~/.kube/config"
+                           sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#1.0#g;s#{APP_NAME}#${params.APP_NAME}#g;s#{SPRING_PROFILE}#k8s-test#g' k8s-deployment.tpl > k8s-deployment.yml"
+                           sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
+                       }
+
+                   }
+
+               }
        }
  }
