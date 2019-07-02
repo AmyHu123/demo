@@ -44,8 +44,7 @@ pipeline {
            stage('Deploy') {
                        agent any
                        steps {
-                           sh "mkdir -p ~/.kube"
-                           sh "echo ${K8S_CONFIG} > ~/.kube/config"
+
                            sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#1.0#g;s#{APP_NAME}#${params.APP_NAME}#g' k8s-deployment.tpl > k8s-deployment.yml"
                            sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
                        }
