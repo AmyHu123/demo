@@ -3,7 +3,6 @@ pipeline {
 
         environment {
                 HARBOR_CREDS = credentials('jenkins-harbor')
-                GIT_TAG = sh(returnStdout: true,script: 'git describe --tags').trim()
             }
 
         parameters {
@@ -13,7 +12,7 @@ pipeline {
 
    stages {
            stage('Maven Build') {
-               when { expression { env.GIT_TAG != null } }
+
                agent {
                    docker {
                        image 'maven:3-jdk-8-alpine'
@@ -27,11 +26,7 @@ pipeline {
 
            }
            stage('Docker Build') {
-               when {
-                   allOf {
-                       expression { env.GIT_TAG != null }
-                   }
-               }
+
                agent any
                steps {
                    unstash 'demo'
