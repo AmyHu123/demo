@@ -11,6 +11,7 @@ pipeline {
                 string(name: 'DOCKER_IMAGE', defaultValue: 'demo-master', description: 'docker镜像名')
                 string(name: 'APP_NAME', defaultValue: 'demo-master', description: 'k8s中标签名')
                 string(name: 'K8S_NAMESPACE', defaultValue: 'default', description: 'k8s的namespace名称')
+                string(name: 'DOCKER_IMAGE_TAG', defaultValue: '1.0', description: '镜像版本')
             }
 
    stages {
@@ -34,9 +35,9 @@ pipeline {
                steps {
                    unstash 'demo'
                    sh "docker login -u ${HARBOR_CREDS_USR} -p ${HARBOR_CREDS_PSW} ${params.HARBOR_HOST}"
-                   sh "docker build --build-arg JAR_FILE=`ls target/*.jar |cut -d '/' -f2` -t ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0 ."
-                   sh "docker push ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0"
-                   sh "docker rmi ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:1.0"
+                   sh "docker build --build-arg JAR_FILE=`ls target/*.jar |cut -d '/' -f2` -t ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:${params.DOCKER_IMAGE_TAG} ."
+                   sh "docker push ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:${params.DOCKER_IMAGE_TAG}"
+                   sh "docker rmi ${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}:${params.DOCKER_IMAGE_TAG}"
                }
 
            }
@@ -50,10 +51,9 @@ pipeline {
                        steps {
                            sh "mkdir -p ~/.kube"
                            sh "echo ${K8S_CONFIG} | base64 -d > ~/.kube/config"
-                           sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#1.0#g;s#{APP_NAME}#${params.APP_NAME}#g' k8s-deployment.tpl > k8s-deployment.yml"
+                           sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#${params.DOCKER_IMAGE_TAG}#g;s#{APP_NAME}#${params.APP_NAME}#g' k8s-deployment.tpl > k8s-deployment.yml"
                            sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
-                           sh "sed -e 's#{APP_NAME}#${params.APP_NAME}#g' k8s-service.tpl > k8s-service.yml"
-                           sh "kubectl apply -f k8s-service.yml --namespace=${params.K8S_NAMESPACE}"
+
                        }
 
                    }
