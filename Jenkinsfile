@@ -52,6 +52,8 @@ pipeline {
                            sh "echo ${K8S_CONFIG} | base64 -d > ~/.kube/config"
                            sh "sed -e 's#{IMAGE_URL}#${params.HARBOR_HOST}/test/${params.DOCKER_IMAGE}#g;s#{IMAGE_TAG}#1.0#g;s#{APP_NAME}#${params.APP_NAME}#g' k8s-deployment.tpl > k8s-deployment.yml"
                            sh "kubectl apply -f k8s-deployment.yml --namespace=${params.K8S_NAMESPACE}"
+                           sh "sed -e 's#{APP_NAME}#${params.APP_NAME}#g' k8s-service.tpl > k8s-service.yml"
+                           sh "kubectl apply -f k8s-service.yml --namespace=${params.K8S_NAMESPACE}"
                        }
 
                    }
