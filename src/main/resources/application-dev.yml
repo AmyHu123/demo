@@ -1,0 +1,52 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: demo
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/corpus_dataset
+
+  freemarker:
+    cache: false
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+
+
+#监控
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: httptrace,refresh,health,info
+
+info:
+  model:
+    name: demo
+    version: 1.0.0
+    port: 8082
+
+
+#logging:
+#  config: classpath:log4j2-dev.xml
+
+#日志
+logback:
+  logdir: D:\log
+
+
+
+
+

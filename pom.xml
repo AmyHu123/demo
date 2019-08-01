@@ -25,15 +25,60 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- 排除掉boot中原有的logging,否则会与log4j冲突-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.springframework.boot</groupId>-->
+                    <!--<artifactId>spring-boot-starter-logging</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
 
+        <!-- log4j-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-log4j2</artifactId>-->
+        <!--</dependency>-->
+
+        <!-- mongo -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <!-- commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <!--Actuator 监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -44,29 +89,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-            <!--<plugin>-->
-                <!--<groupId>com.spotify</groupId>-->
-                <!--<artifactId>docker-maven-plugin</artifactId>-->
-                <!--<version>1.2.1-SNAPSHOT</version>-->
-
-                <!--<configuration>-->
-                    <!--<imageName>192.168.233.128:5000/${project.artifactId}:${project.version}}</imageName>-->
-                    <!--<baseImage>java</baseImage>-->
-                    <!--<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>-->
-                    <!--&lt;!&ndash; copy the service's jar file from target into the root directory of the image &ndash;&gt;-->
-                    <!--<resources>-->
-                        <!--<resource>-->
-                            <!--<targetPath>/</targetPath>-->
-                            <!--<directory>${project.build.directory}</directory>-->
-                            <!--<include>${project.build.finalName}.jar</include>-->
-                        <!--</resource>-->
-                    <!--</resources>-->
-
-                    <!--<dockerHost>http://harbor.olavoice.com</dockerHost>-->
-                <!--</configuration>-->
-
-            <!--</plugin>-->
         </plugins>
     </build>
 
