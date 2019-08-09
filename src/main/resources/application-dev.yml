@@ -7,6 +7,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/corpus_dataset
+  profiles:
+    active: dev
 
   freemarker:
     cache: false
@@ -45,6 +47,22 @@ info:
 #日志
 logback:
   logdir: D:\log
+
+#fastDFS的地址
+fdfs:
+  so-timeout: 30000
+  connect-timeout: 30000
+  thumb-image:
+    height: 150
+    width: 150
+  tracker-list: 192.168.233.131:22122
+  pool:
+    max-total: 500
+    max-wait-millis: 30000
+  web-server-url: http://192.168.233.131:8888/
+
+
+
 
 
 
